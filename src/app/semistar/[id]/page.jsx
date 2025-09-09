@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
-import useNotesStore from '@/store/useNotesStore'
+// import useNotesStore from '@/store/useNotesStore'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import noteStore from '@/store/noteStore'

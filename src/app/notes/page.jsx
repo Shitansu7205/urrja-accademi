@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import useNotesStore from '@/store/useNotesStore'
+// import useNotesStore from '@/store/useNotesStore'
 import { StickyNote } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
