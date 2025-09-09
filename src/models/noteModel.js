@@ -32,8 +32,18 @@ const noteSchema = new mongoose.Schema({
         trim: true,
     },
     file_url: {
-        type: String, // store download link for paid users
+        type: String,           // store download link for paid users
         required: false,
+        trim: true,
+    },
+    price: {
+        type: Number,
+        required: true,
+        trim: true,
+    },
+    public_id: {
+        type: String,
+        required: true,
         trim: true,
     }
 
