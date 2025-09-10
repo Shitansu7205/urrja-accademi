@@ -6,18 +6,7 @@ import { Button } from "@/components/ui/button"
 import noteStore from '@/store/noteStore'
 import { useRouter } from 'next/navigation'
 import { setCookie } from "cookies-next";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+
 
 const Allnotes = () => {
     const { course_id, sem_id } = useParams() // get from route
