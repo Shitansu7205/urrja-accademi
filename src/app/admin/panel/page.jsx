@@ -118,17 +118,17 @@ const Panel = () => {
         <>
 
             {loading && <Loader />}
-            <div className="px-6 py-8 bg-gradient-to-r from-gray-50 to-gray-100 min-h-screen">
-                <h1 className="text-3xl font-bold mb-10 text-center text-gray-900">Admin Panel</h1>
+            <div className="px-6 py-3 bg-gradient-to-r from-gray-50 to-gray-100 min-h-0">
+                {/* <h1 className="text-3xl font-bold mb-10 text-center text-gray-900">Admin Panel</h1> */}
 
-                <div className="flex justify-center mb-10">
+                {/* <div className="flex justify-center mb-10">
                     <button
                         onClick={() => (window.location.href = '/admin/post-note')}
                         className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg transition transform hover:-translate-y-1"
                     >
                         <span className="text-xl">➕</span> Post New Note
                     </button>
-                </div>
+                </div> */}
 
                 <div className="flex justify-center p-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]">

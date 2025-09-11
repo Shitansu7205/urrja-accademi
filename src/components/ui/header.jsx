@@ -18,7 +18,7 @@ const Header = () => {
         { name: "Home", href: "https://urrja-static-site.vercel.app/" },
         { name: "About Us", href: "https://urrja-static-site.vercel.app/about.html" },
         { name: "Certification", href: "/certification" },
-        { name: "Admission", href: "/" },
+        { name: "Admission", href: "/admission" },
         { name: "Notes", href: "/" },
         { name: "Contact Us", href: "https://urrja-static-site.vercel.app/contact.html" },
     ];
