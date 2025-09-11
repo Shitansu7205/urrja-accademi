@@ -1,5 +1,7 @@
+
 'use client'
 import React, { useState } from 'react';
+import { Metadata } from "next";
 import { useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,6 +17,8 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/Loader"
+
+
 
 export default function Admission() {
   const [step, setStep] = useState(1);
@@ -103,11 +107,9 @@ export default function Admission() {
 
 
 
-
-
-
   // ✅ Submit handler
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setLoading(true);
     try {
@@ -141,11 +143,6 @@ export default function Admission() {
       setLoading(false);
     }
   };
-
-
-
-
-
 
 
 
@@ -204,12 +201,17 @@ export default function Admission() {
     toast.success("Form reset successfully!");
   };
 
+
+
   return (
     <>
+
       {loading && <Loader />}
-      <div className="pt-20 max-w-7xl mx-auto">
+
+
+      <div className="pt-14 max-w-7xl mx-auto " style={{ backgroundColor: "#F5F6FA" }}>
         {step === 1 && (
-          <div className="max-w-5xl mx-auto p-8 bg-gradient-to-br from-white to-gray-50 border rounded-2xl shadow-xl">
+          <div className="max-w-5xl mx-auto p-8 bg-gradient-to-br from-white to-gray-50 border rounded-sm shadow-xl">
             <div className="flex items-center justify-center gap-3 mb-8">
               <span className="bg-indigo-600 text-white w-7 h-7 flex items-center justify-center rounded-full font-bold shadow-md">1</span>
               <h2 className="text-2xl font-bold md:text-2xl  text-gray-800">
@@ -415,7 +417,7 @@ export default function Admission() {
               {/* Reset Button */}
               <Button
                 onClick={handeleReset}
-                className="flex items-center gap-2 px-6 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                className="bg-rose-100 text-rose-700 border border-rose-200 rounded-md px-5 py-2 hover:bg-rose-200 transition-colors shadow-sm"
               >
                 <RefreshCw size={16} /> Reset
               </Button>
@@ -423,18 +425,17 @@ export default function Admission() {
               {/* Next Button */}
               <Button
                 onClick={next}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                className="bg-indigo-600 text-white rounded-md px-5 py-2 hover:bg-indigo-700 transition-colors shadow-md"
               >
                 Next <ArrowRight size={16} />
               </Button>
             </div>
           </div>
-
         )}
 
 
         {step === 2 && (
-          <div className="max-w-5xl mx-auto p-6 bg-white border rounded-lg shadow-md">
+          <div className="max-w-5xl mx-auto p-6 bg-white border rounded-sm shadow-md">
             <div className="flex items-center justify-center gap-3 mb-8">
               <span className="bg-indigo-600 text-white w-7 h-7 flex items-center justify-center rounded-full font-bold shadow-md">2</span>
               <h2 className="text-2xl font-bold md:text-2xl  text-gray-800">
@@ -563,7 +564,7 @@ export default function Admission() {
               {/* Prev Button */}
               <Button
                 onClick={prev}
-                className="flex items-center gap-2 px-6 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+                className="bg-gray-100 text-gray-700 border border-gray-300 rounded-md px-5 py-2 hover:bg-gray-200 transition-colors shadow-sm"
               >
                 <ArrowLeft size={16} /> Prev
               </Button>
@@ -571,7 +572,7 @@ export default function Admission() {
               {/* Reset Button */}
               <Button
                 onClick={handeleReset}
-                className="flex items-center gap-2 px-6 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                className="bg-rose-100 text-rose-700 border border-rose-200 rounded-md px-5 py-2 hover:bg-rose-200 transition-colors shadow-sm"
               >
                 <RefreshCw size={16} /> Reset
               </Button>
@@ -579,7 +580,7 @@ export default function Admission() {
               {/* Next Button */}
               <Button
                 onClick={next}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                className="bg-indigo-600 text-white rounded-md px-5 py-2 hover:bg-indigo-700 transition-colors shadow-md"
               >
                 Next <ArrowRight size={16} />
               </Button>
@@ -593,7 +594,7 @@ export default function Admission() {
 
         {step === 3 && (
 
-          <div className="max-w-7xl mx-auto p-5 bg-white border rounded-lg shadow-md">
+          <div className="max-w-7xl mx-auto p-5 bg-white border rounded-sm shadow-md">
             <div className="flex items-center justify-center gap-3 mb-8">
               <span className="bg-indigo-600 text-white w-7 h-7 flex items-center justify-center rounded-full font-bold shadow-md">3</span>
               <h2 className="text-2xl font-bold md:text-2xl  text-gray-800">
@@ -704,7 +705,7 @@ export default function Admission() {
               {/* Prev Button */}
               <Button
                 onClick={prev}
-                className="flex items-center gap-2 px-6 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+                className="bg-gray-100 text-gray-700 border border-gray-300 rounded-md px-5 py-2 hover:bg-gray-200 transition-colors shadow-sm"
               >
                 <ArrowLeft size={16} /> Prev
               </Button>
@@ -712,7 +713,7 @@ export default function Admission() {
               {/* Reset Button */}
               <Button
                 onClick={handeleReset}
-                className="flex items-center gap-2 px-6 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                className="bg-rose-100 text-rose-700 border border-rose-200 rounded-md px-5 py-2 hover:bg-rose-200 transition-colors shadow-sm"
               >
                 <RefreshCw size={16} /> Reset
               </Button>
@@ -720,7 +721,7 @@ export default function Admission() {
               {/* Next Button */}
               <Button
                 onClick={next}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                className="bg-indigo-600 text-white rounded-md px-5 py-2 hover:bg-indigo-700 transition-colors shadow-md"
               >
                 Next <ArrowRight size={16} />
               </Button>
@@ -731,14 +732,14 @@ export default function Admission() {
         )}
 
         {step === 4 && (
-          <div className="max-w-7xl mx-auto p-6 bg-white border rounded-lg shadow-md space-y-8">
+          <div className="max-w-7xl mx-auto p-6 bg-white border rounded-sm shadow-md space-y-8">
             <div className="flex items-center justify-center gap-3 mb-8">
               <span className="bg-indigo-600 text-white w-7 h-7 flex items-center justify-center rounded-full font-bold shadow-md">4</span>
               <h2 className="text-2xl font-bold md:text-2xl  text-gray-800">
                 Upload Documents
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
               {/* Passport Photo */}
               <div className="flex flex-col">
@@ -947,15 +948,16 @@ export default function Admission() {
               {/* Prev Button */}
               <Button
                 onClick={prev}
-                className="flex items-center gap-2 px-6 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition"
+                className="bg-gray-100 text-gray-700 border border-gray-300 rounded-md px-5 py-2 hover:bg-gray-200 transition-colors shadow-sm"
               >
-                <ArrowLeft size={16} /> Prev
+                <ArrowLeft size={16} /> Previous
               </Button>
 
               {/* Reset Button */}
               <Button
                 onClick={handeleReset}
-                className="flex items-center gap-2 px-6 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                className="bg-rose-100 text-rose-700 border border-rose-200 rounded-md px-5 py-2 hover:bg-rose-200 transition-colors shadow-sm"
+
               >
                 <RefreshCw size={16} /> Reset
               </Button>
@@ -963,11 +965,13 @@ export default function Admission() {
               {/* Next Button */}
               <Button
                 onClick={handleSubmit}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
+                className="bg-indigo-600 text-white rounded-md px-5 py-2 hover:bg-indigo-700 transition-colors shadow-md"
+
               >
                 Submit <ArrowRight size={16} />
               </Button>
             </div>
+
           </div>
         )}
 
