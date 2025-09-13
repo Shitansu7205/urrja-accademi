@@ -296,7 +296,7 @@ const Allnotes = () => {
 
                                                         <Button
                                                             className="bg-black text-white hover:opacity-90"
-                                                            onClick={() => handlePayment(selectedNote._id)}
+                                                            onClick={() => handlePayment(note._id)}
                                                         >
                                                             <CreditCard className="w-5 h-5" />   Check Out
                                                         </Button>
