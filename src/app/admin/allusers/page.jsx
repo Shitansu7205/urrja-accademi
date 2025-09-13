@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { CheckCircle, XCircle, CreditCard, User, CalendarCheck, Mail, Phone } from "lucide-react"; // Icons for status
+import { CheckCircle, XCircle, CreditCard, User, CalendarCheck, Mail as MailIcon, Phone as PhoneIcon } from "lucide-react"; // Icons for status
 import { Badge } from "@/components/ui/badge";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "@/components/ui/hover-card";
 
@@ -89,10 +89,10 @@ const UsersList = () => {
 
                                     {/* Email & Phone */}
                                     <p className="text-sm text-gray-700 truncate mb-1 flex items-center gap-2">
-                                        <Mail className="w-4 h-4 text-purple-600" /> {p.email}
+                                        <MailIcon className="w-4 h-4 text-purple-600" /> {p.email}
                                     </p>
                                     <p className="text-sm text-gray-700 mb-2 flex items-center gap-2">
-                                        <Phone className="w-4 h-4 text-purple-600" /> {p.phone}
+                                        <PhoneIcon className="w-4 h-4 text-purple-600" /> {p.phone}
                                     </p>
 
                                     {/* Payment Details */}
