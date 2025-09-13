@@ -32,10 +32,20 @@ const Notes = () => {
     const [loading, setLoading] = useState(false);
 
     const { notes, fetchNotes } = noteStore()
+    // Fetch notes on mount
     useEffect(() => {
-        fetchNotes();
-    }, [fetchNotes])
-    // console.log(notes)
+        const loadNotes = async () => {
+            setLoading(true); // show loader
+            await fetchNotes(); // fetch notes
+            setLoading(false); // hide loader after fetching
+        };
+
+        if (notes.length === 0) {
+            loadNotes();
+        } else {
+            setLoading(false); // already have notes
+        }
+    }, [fetchNotes, notes.length]);
 
 
     // ✅ Get unique courses by course_id
@@ -56,7 +66,7 @@ const Notes = () => {
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                                <BreadcrumbLink >Home</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
 

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, X, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-// import Router from "next/navigation";
 import { useRouter } from "next/navigation";
 
 
@@ -17,9 +16,9 @@ const Header = () => {
     const navLinks = [
         { name: "Home", href: "https://urrja-static-site.vercel.app/" },
         { name: "About Us", href: "https://urrja-static-site.vercel.app/about.html" },
-        { name: "Certification", href: "/certification" },
+        { name: "Certification", href: "https://urrja-static-site.vercel.app/certificate.html" },
         { name: "Admission", href: "/admission" },
-        { name: "Notes", href: "/" },
+        { name: "Notes", href: "/notes" },
         { name: "Contact Us", href: "https://urrja-static-site.vercel.app/contact.html" },
     ];
 
@@ -66,7 +65,7 @@ const Header = () => {
                 {/* Admin Login Button */}
                 <div className="hidden md:flex">
                     {isLoggedIn ? (
-                        <Button variant="outline" className="flex items-center gap-2" onClick={() => router.push("/admin/panel")}>
+                        <Button variant="outline" className="flex items-center gap-2" onClick={() => router.push("/admin/dashboard")}>
                             <LogIn size={18} /> Admin Panel
                         </Button>
                     ) : (<Button variant="outline" className="flex items-center gap-2" onClick={() => router.push("/admin/login")}>

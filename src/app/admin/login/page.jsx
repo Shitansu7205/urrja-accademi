@@ -42,7 +42,7 @@ export default function Login() {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
             toast.success("Login successful");
-            router.push("/admin/panel");
+            router.push("/admin/dashboard");
         } catch (err) {
             console.error(err);
             toast.error("Server error. Try again later.");
