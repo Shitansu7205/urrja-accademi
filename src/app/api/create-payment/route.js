@@ -49,7 +49,7 @@ export async function POST(req) {
         email,
         phone,
         orderId: order.id,
-        status: "pending"
+        status: "pending",
     });
 
     // Return order details to frontend

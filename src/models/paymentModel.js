@@ -9,7 +9,8 @@ const paymentSchema = new mongoose.Schema({
   orderId: { type: String, required: true },
   paymentId: { type: String },
   status: { type: String, enum: ["pending", "paid", "failed"], default: "pending" },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  amount: { type: Number, required: false }
 });
 
 const Payment = mongoose.models.Payment || mongoose.model("Payment", paymentSchema);

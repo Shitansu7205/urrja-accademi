@@ -53,27 +53,42 @@ export async function GET(req) {
     const user = JSON.parse(userCookie);
 
     // ✅ Verify payment in DB
-    const payment = await Payments.findOne({
+    let payment = await Payments.findOne({
         userId: user._id,
         noteId: id,
         status: "paid"
     });
     if (!payment) return new Response("Not purchased", { status: 403 });
 
+    // ✅ If no expiry set, create one at payment time
+    if (!payment.expiresAt) {
+        payment.expiresAt = new Date(Date.now() + 60 * 1000); // 1 min from first access
+        await payment.save();
+    }
+
+    // ✅ Check if expired
+    if (payment.expiresAt < new Date()) {
+        return new Response("Link expired", { status: 410 }); // 410 Gone
+    }
+
     // ✅ Fetch note
     const note = await Notes.findById(id);
     if (!note) return new Response("Note not found", { status: 404 });
 
-    // ✅ Expiry time
-    const expiresAt = Math.floor(Date.now() / 1000) + 300; // 5 min
-    const expiresAtDate = new Date(expiresAt * 1000).toISOString();
+    const expiresAt = Math.floor(payment.expiresAt.getTime() / 1000);
 
-    // ✅ Generate signed URL
+    // ✅ Generate signed URL (use stored expiry)
     const signedUrl = cloudinary.utils.private_download_url(
         note.public_id,
         "pdf",
         { expires_at: expiresAt, resource_type: "raw", attachment: true }
     );
 
-    return Response.json({ signedUrl, expiresAt, expiresAtDate });
+    return Response.json({
+        signedUrl,
+        expiresAt,
+        expiresAtDate: payment.expiresAt.toISOString()
+    });
 }
+
+

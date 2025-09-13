@@ -1,12 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     LayoutDashboard,
     StickyNote,
     PlusCircle,
-    FileText, Users, DollarSign, Heart, ClipboardList
+    FileText, Users, DollarSign, Heart, ClipboardList, CreditCard
 } from "lucide-react";
 import {
     Card,
@@ -20,32 +20,35 @@ import { Textarea } from "@/components/ui/textarea";
 import Panel from "../panel/page";
 import UploadNote from '@/app/admin/post-note/page'
 import Link from "next/link";
-
+import UsersList from '@/app/admin/allusers/page'
 const menuItems = [
     { id: "home", label: "Home", icon: LayoutDashboard },
     { id: "post", label: "Post Note", icon: PlusCircle },
     { id: "notes", label: "My Notes", icon: StickyNote },
+    { id: "users", label: "All Transactions", icon: CreditCard },
 ];
+import paymentStore from "@/store/paymentStore";
 
 export default function Dashboard() {
     const [active, setActive] = useState("home");
-    const [notes, setNotes] = useState([
-        { id: 1, title: "First Note", content: "This is my first note." },
-        { id: 2, title: "Meeting Notes", content: "Project meeting at 3 PM." },
-    ]);
-    const [newNote, setNewNote] = useState({ title: "", content: "" });
+    const { payments, fetchPayments, totalAmount } = paymentStore();
+    // const addNote = () => {
+    //     if (!newNote.title || !newNote.content) return;
+    //     setNotes([...notes, { id: Date.now(), ...newNote }]);
+    //     setNewNote({ title: "", content: "" });
+    //     setActive("notes"); // redirect to My Notes
+    // };
 
-    const addNote = () => {
-        if (!newNote.title || !newNote.content) return;
-        setNotes([...notes, { id: Date.now(), ...newNote }]);
-        setNewNote({ title: "", content: "" });
-        setActive("notes"); // redirect to My Notes
-    };
+    useEffect(() => {
+        if (!payments || payments.length === 0) {
+            fetchPayments();
+        }
+    }, [payments, fetchPayments]);
 
     return (
         <div className="flex h-screen ">
             {/* Sidebar */}
-            <aside className="fixed top-0 left-0 h-screen w-64 bg-white border-r shadow-sm flex flex-col">
+            <aside className="fixed top-0 pt-18 left-0 h-screen w-64 bg-white border-r shadow-sm flex flex-col">
                 <div className="px-6 py-4 text-xl font-bold border-b bg-purple-600 text-white">
                     Admin Panel
                 </div>
@@ -56,7 +59,7 @@ export default function Dashboard() {
                             <button
                                 key={item.id}
                                 onClick={() => setActive(item.id)}
-                                className={`flex items-center w-full px-3 py-2 rounded-lg text-sm font-medium transition ${active === item.id
+                                className={`flex items-center w-full px-3 py-2 rounded-lg text-sm font-medium transition mb-5 ${active === item.id
                                     ? "bg-purple-600 text-white shadow"
                                     : "text-gray-700 hover:bg-gray-100"
                                     }`}
@@ -92,7 +95,7 @@ export default function Dashboard() {
                                             <CardTitle className="text-sm text-pink-700">Notes</CardTitle>
                                         </CardHeader>
                                         <CardContent className="text-xl font-semibold text-pink-900">
-                                            {notes.length}
+                                            123
                                         </CardContent>
                                     </Card>
                                 </Link>
@@ -111,7 +114,7 @@ export default function Dashboard() {
                                         <DollarSign className="w-4 h-4 text-green-700" />
                                         <CardTitle className="text-sm text-green-700">Total Income</CardTitle>
                                     </CardHeader>
-                                    <CardContent className="text-xl font-semibold text-green-900">$2300</CardContent>
+                                    <CardContent className="text-xl font-semibold text-green-900">{totalAmount}</CardContent>
                                 </Card>
 
                                 {/* Form Submissions */}
@@ -136,6 +139,11 @@ export default function Dashboard() {
                         <div className="space-y-4">
                             <h2 className="text-xl font-semibold">My Notes</h2>
                             <Panel />
+                        </div>
+                    )}
+                    {active === "users" && (
+                        <div className="space-y-4">
+                            <UsersList />
                         </div>
                     )}
                 </div>

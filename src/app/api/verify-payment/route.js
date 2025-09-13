@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import connectDB from "@/dbConfig/dbconfig";
 import Payment from "@/models/paymentModel";
+import Notes from "@/models/noteModel";
 
 export async function POST(req) {
   await connectDB();
@@ -20,6 +21,18 @@ export async function POST(req) {
       return NextResponse.json({ success: false, message: "Invalid signature" }, { status: 400 });
     }
 
+    // 2. Fetch note price
+    const note = await Notes.findById(noteId);
+    if (!note) {
+      return NextResponse.json(
+        { success: false, message: "Note not found" },
+        { status: 404 }
+      );
+    }
+    // console.log("Note price is:", note.price);
+
+
+
     // 2. Update payment status in DB
     const payment = await Payment.findOneAndUpdate(
       { orderId: razorpay_order_id },
@@ -27,6 +40,7 @@ export async function POST(req) {
         status: "paid",
         paymentId: razorpay_payment_id,
         signature: razorpay_signature,
+        amount: note.price,
       },
       { new: true }
     );
