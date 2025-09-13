@@ -60,7 +60,7 @@ const Semistar = () => {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink href="/notes">All Notes</BreadcrumbLink>
+                                <BreadcrumbLink onClick={() => router.back()}>All Notes</BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
