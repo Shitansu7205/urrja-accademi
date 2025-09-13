@@ -1,12 +1,33 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import noteStore from '@/store/noteStore'
 import { useRouter } from 'next/navigation'
 import { setCookie } from "cookies-next";
-
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { ShoppingCart, Eye, CreditCard } from "lucide-react";
+import toast from 'react-hot-toast'
+import Loader from "@/components/ui/Loader"
 
 const Allnotes = () => {
     const { course_id, sem_id } = useParams() // get from route
@@ -15,24 +36,21 @@ const Allnotes = () => {
     const [filteredNotes, setFilteredNotes] = useState([]);
 
 
-    const [showModal, setShowModal] = useState(false);
+    // const [showModal, setShowModal] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
+    const [loading, setLoading] = useState(false);
 
 
     const router = useRouter()
 
 
 
-    const logOut = () => {
-        localStorage.removeItem('token')
-        alert('Logged out successfully')
-    }
-
 
     useEffect(() => {
+        setLoading(true)
         // fetch notes if not yet fetched
         if (notes.length === 0) {
             fetchNotes();
@@ -49,17 +67,17 @@ const Allnotes = () => {
         });
 
         setFilteredNotes(filtered);
-
+        setLoading(false)
         // console.log("Notes:", notes);
         // console.log("Params:", course_id, sem_id);
         console.log("🔥 Filtered notes:", filtered);
     }, [notes, course_id, sem_id, fetchNotes]);
 
 
-    const openModal = (note) => {
-        setSelectedNote(note);
-        setShowModal(true);
-    };
+    // const openModal = (note) => {
+    //     setSelectedNote(note);
+    //     setShowModal(true);
+    // };
 
     // Load Razorpay script
     useEffect(() => {
@@ -71,7 +89,7 @@ const Allnotes = () => {
 
     const handlePayment = async (noteId) => {
         if (!name || !email || !phone) {
-            alert("Please fill all fields");
+            toast.error("Please fill in all the details");
             return;
         }
 
@@ -84,7 +102,7 @@ const Allnotes = () => {
         const data = await res.json();
 
         if (!data.success) {
-            alert("Payment initiation failed");
+            toast.error("Payment initiation failed");
             return;
         }
 
@@ -124,7 +142,7 @@ const Allnotes = () => {
                     }), { maxAge: 60 * 30, path: "/" }); // 30 mins cookie
                     window.location.href = `/download/${noteId}`;
                 } else {
-                    alert("Payment verification failed");
+                    toast.error("Payment verification failed");
                 }
             },
             prefill: {
@@ -147,61 +165,31 @@ const Allnotes = () => {
 
     return (
         <>
-            <div className="p-4">
-                <h2 className="text-2xl font-bold mb-4">Notes</h2>
-                <button onClick={logOut}>Logout</button>
-
+            {loading && <Loader />}
+            <div className="p-4  lg:p-10 min-h-0 text-gray-900 pt-10">
+                <div className='pl-12'>
+                    <Breadcrumb>
+                        <BreadcrumbList>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbLink onClick={() => router.back()} >
+                                    Semistars</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbSeparator />
+                            <BreadcrumbItem>
+                                <BreadcrumbPage>Notes</BreadcrumbPage>
+                            </BreadcrumbItem>
+                        </BreadcrumbList>
+                    </Breadcrumb>
+                </div>
                 {filteredNotes.length === 0 ? (
                     <p>No notes found for this semester</p>
                 ) : (
-                    // <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-red-400 ">
-                    //     {filteredNotes.map(note => (
-                    //         <Card key={note._id} className="shadow-md hover:shadow-lg transition rounded-2xl  pt-0">
-                    //             {/* Image */}
-                    //             {note.img_url && (
-                    //                 <img
-                    //                     src={note.img_url}
-                    //                     alt={note.note_title}
-                    //                     className="w-full h-40 object-cover rounded-t-2xl"
-                    //                 />
-                    //             )}
 
-                    //             <CardHeader>
-                    //                 <CardTitle className="text-lg font-semibold">{note.note_title}</CardTitle>
-                    //             </CardHeader>
-
-                    //             <CardContent>
-                    //                 <p className="text-gray-600 text-sm">{note.desc}</p>
-                    //                 <p className="font-bold text-purple-600 mt-2">₹ {note.price}</p>
-                    //             </CardContent>
-
-                    //             <CardFooter className="flex justify-between gap-2">
-                    //                 <Button
-                    //                     className="flex-1"
-                    //                     onClick={() => paymentPageFunction(note._id)}
-                    //                 >
-                    //                     Buy Now
-                    //                 </Button>
-                    //                 {/* <button
-                    //                     onClick={() => window.open(`/api/downloadnotes?id=${note._id}`, "_blank")}
-                    //                     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                    //                 >
-                    //                     Buy & Download
-                    //                 </button> */}
-                    //                 <Button className="flex-1" onClick={() => openModal(note)}>
-                    //                     Buy Now
-                    //                 </Button>
-
-
-
-                    //             </CardFooter>
-                    //         </Card>
-                    //     ))}
-                    // </div>
-
-
-
-                    <div className="flex justify-center p-6">
+                    <div className="flex justify-center p-6 md:pt-9">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-[1400px]">
                             {filteredNotes.map((note) => (
                                 <div
@@ -242,95 +230,88 @@ const Allnotes = () => {
                                         </div>
 
                                         {/* Action Buttons */}
+
                                         <div className="flex gap-2 mt-2">
+                                            {/* Buy Now Button */}
                                             {/* <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="flex-1 flex items-center justify-center gap-1 bg-yellow-50 hover:bg-yellow-100 text-yellow-800 rounded-md transition"
-                                            onClick={() => handleEditClick(note._id)}
-                                        >
-                                            <Edit3 className="w-4 h-4" /> Edit
-                                        </Button> */}
-
-                                            <Button className="flex-1" onClick={() => openModal(note)}>
+                                                className="flex-1 flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-purple-700 transition-all duration-200"
+                                                onClick={() => openModal(note)}
+                                            >
+                                                <ShoppingCart className="w-5 h-5" />
                                                 Buy Now
-                                            </Button>
-                                            {/* <Dialog>
-                                                <form>
-                                                    <DialogTrigger asChild>
-                                                        <Button variant="outline">    Buy Now</Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent className="sm:max-w-[425px]">
-                                                        <DialogHeader>
-                                                            <DialogTitle>Edit profile</DialogTitle>
-                                                            <DialogDescription>
-                                                                Make changes to your profile here. Click save when you&apos;re
-                                                                done.
-                                                            </DialogDescription>
-                                                        </DialogHeader>
-                                                        <div className="grid gap-4">
-                                                            <div className="grid gap-3">
-                                                                <Label htmlFor="name-1">Name</Label>
-                                                                <Input id="name-1" name="name" defaultValue="Pedro Duarte" value={name}
-                                                                    onChange={(e) => setName(e.target.value)} />
-                                                            </div>
-                                                            <div className="grid gap-3">
-                                                                <Label htmlFor="username-1">Username</Label>
-                                                                <Input id="email-1" name="username" defaultValue="@peduarte" value={email}
-                                                                    onChange={(e) => setEmail(e.target.value)} />
-                                                            </div>
-                                                            <div className="grid gap-3">
-                                                                <Label htmlFor="username-1">Phone </Label>
-                                                                <Input id="phone-1" name="username" defaultValue="@peduarte" value={email}
-                                                                    onChange={(e) => setEmail(e.target.value)} />
-                                                            </div>
-                                                        </div>
-                                                        <DialogFooter>
-                                                            <DialogClose asChild>
-                                                                <Button variant="outline">Cancel</Button>
-                                                            </DialogClose>
-                                                            <Button type="submit">Save changes</Button>
-                                                        </DialogFooter>
-                                                    </DialogContent>
-                                                </form>
-                                            </Dialog> */}
+                                            </Button> */}
 
-                                            {/* <AlertDialog>
-                                                <AlertDialogTrigger asChild>
-                                                    <Button
-                                                        variant="outline"
-                                                        size="sm"
-                                                        className="flex-1 flex items-center justify-center gap-1 bg-red-50 hover:bg-red-100 text-red-800 rounded-md transition"
-                                                    >
-                                                        Buy Now
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button className="flex-1 flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-purple-700 transition-all duration-200">
+                                                        <ShoppingCart className="w-5 h-5" /> Buy Now
                                                     </Button>
-                                                </AlertDialogTrigger>
+                                                </DialogTrigger>
 
-                                                <AlertDialogContent>
-                                                    <AlertDialogHeader>
-                                                        <AlertDialogTitle className="text-purple-800">Are you sure?</AlertDialogTitle>
-                                                        <AlertDialogDescription className="text-gray-600">
-                                                            This action cannot be undone. This will permanently delete the note.
-                                                        </AlertDialogDescription>
-                                                    </AlertDialogHeader>
-                                                    <AlertDialogFooter>
-                                                        <AlertDialogCancel className="bg-gray-200 text-gray-800 hover:bg-gray-300">
-                                                            Cancel
-                                                        </AlertDialogCancel>
-                                                        <AlertDialogAction
-                                                            className="bg-purple-800 text-white hover:bg-purple-900"
-                                                            onClick={() => {
-                                                                handleDelete(note._id)
-                                                                toast.success("Note deleted successfully")
-                                                            }}
+                                                <DialogContent className="sm:max-w-[425px]">
+                                                    <DialogHeader>
+                                                        <DialogTitle className="text-lg">Enter Your Details</DialogTitle>
+                                                        <DialogDescription>
+                                                            Please fill out your details to proceed with payment.
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+
+                                                    <div className="grid gap-4 py-2">
+                                                        <div className="grid gap-2">
+                                                            <Label htmlFor="name">Name</Label>
+                                                            <Input
+                                                                id="name"
+                                                                placeholder="John Doe"
+                                                                value={name}
+                                                                onChange={(e) => setName(e.target.value)}
+                                                            />
+                                                        </div>
+
+                                                        <div className="grid gap-2">
+                                                            <Label htmlFor="email">Email</Label>
+                                                            <Input
+                                                                id="email"
+                                                                type="email"
+                                                                placeholder="example@mail.com"
+                                                                value={email}
+                                                                onChange={(e) => setEmail(e.target.value)}
+                                                            />
+                                                        </div>
+
+                                                        <div className="grid gap-2">
+                                                            <Label htmlFor="phone">Phone</Label>
+                                                            <Input
+                                                                id="phone"
+                                                                placeholder="1234567890"
+                                                                value={phone}
+                                                                onChange={(e) => setPhone(e.target.value)}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <DialogFooter>
+                                                        <DialogClose asChild>
+                                                            <Button variant="outline">Cancel</Button>
+                                                        </DialogClose>
+
+                                                        <Button
+                                                            className="bg-black text-white hover:opacity-90"
+                                                            onClick={() => handlePayment(selectedNote._id)}
                                                         >
-                                                            Yes, Delete
-                                                        </AlertDialogAction>
-                                                    </AlertDialogFooter>
-                                                </AlertDialogContent>
+                                                            <CreditCard className="w-5 h-5" />   Check Out
+                                                        </Button>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                            </Dialog>
 
-                                            </AlertDialog> */}
-
+                                            {/* Preview Button */}
+                                            <Button
+                                                className="flex-1 flex items-center justify-center gap-2 bg-white text-purple-600 px-6 py-2 rounded-lg border-2 border-purple-600 hover:bg-purple-50 hover:border-purple-700 transition-all duration-200"
+                                            // onClick={() => previewNote(note)}
+                                            >
+                                                <Eye className="w-5 h-5" />
+                                                Preview
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +322,7 @@ const Allnotes = () => {
 
 
             </div>
-            {showModal && (
+            {/* {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white p-6 rounded-lg w-96">
                         <h2 className="text-xl font-bold mb-4">Enter Your Details</h2>
@@ -385,9 +366,8 @@ const Allnotes = () => {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
 
-            <button onClick={() => router.push('/notes')}>All Notes</button>
         </>
     )
 }
