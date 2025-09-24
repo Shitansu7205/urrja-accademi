@@ -15,7 +15,7 @@ export default function Login() {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (token) router.push("/admin/panel");
+        if (token) router.push("/admin/dashboard");
     }, []);
 
     const handleChange = (e) =>
@@ -71,7 +71,7 @@ export default function Login() {
 
                 {/* Right Section */}
                 <div className="p-10 flex flex-col justify-center">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6">Sign In</h2>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-6">Admin Log In</h2>
                     <form onSubmit={handleSubmit} className="space-y-5">
 
                         <div className="space-y-2">
