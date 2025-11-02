@@ -29,13 +29,4 @@ export async function POST(req) {
 }
 
 // GET - Fetch all notes
-export async function GET() {
-    try {
-        await connect();
-        const notes = await Notes.find({});
-        return NextResponse.json({ notes });
-    } catch (error) {
-        console.error("Error fetching notes:", error);
-        return NextResponse.json({ error: "Failed to fetch notes" }, { status: 500 });
-    }
-}
+
