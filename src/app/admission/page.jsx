@@ -112,37 +112,37 @@ export default function Admission() {
 
     e.preventDefault();
     toast.success("Form submitted successfully");
-    // setLoading(true);
-    // try {
-    //   const data = new FormData();
+    setLoading(true);
+    try {
+      const data = new FormData();
 
-    //   // append text fields
-    //   Object.keys(formData).forEach((key) => {
-    //     if (formData[key] !== null && !(formData[key] instanceof File)) {
-    //       data.append(key, formData[key]);
-    //     }
-    //   });
+      // append text fields
+      Object.keys(formData).forEach((key) => {
+        if (formData[key] !== null && !(formData[key] instanceof File)) {
+          data.append(key, formData[key]);
+        }
+      });
 
-    //   // append all file fields dynamically
-    //   Object.keys(formData).forEach((key) => {
-    //     if (formData[key] instanceof File) {
-    //       data.append(key, formData[key]);
-    //     }
-    //   });
+      // append all file fields dynamically
+      Object.keys(formData).forEach((key) => {
+        if (formData[key] instanceof File) {
+          data.append(key, formData[key]);
+        }
+      });
 
-    //   const res = await fetch("/api/admission", {
-    //     method: "POST",
-    //     body: data, // 👈 no JSON.stringify, no content-type header
-    //   });
+      const res = await fetch("/api/admission", {
+        method: "POST",
+        body: data, // 👈 no JSON.stringify, no content-type header
+      });
 
-    //   const result = await res.json();
-    //   toast.success("Form submitted successfully");
-    //   localStorage.removeItem("formData");
-    //   setLoading(false);
-    // } catch (error) {
-    //   toast.error("Error submitting form");
-    //   setLoading(false);
-    // }
+      const result = await res.json();
+      toast.success("Form submitted successfully");
+      localStorage.removeItem("formData");
+      setLoading(false);
+    } catch (error) {
+      toast.error("Error submitting form");
+      setLoading(false);
+    }
   };
 
 

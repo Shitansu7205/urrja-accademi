@@ -14,12 +14,12 @@ const Header = () => {
     const router = useRouter()
 
     const navLinks = [
-        { name: "Home", href: "https://urrja-static-site.vercel.app/" },
-        { name: "About Us", href: "https://urrja-static-site.vercel.app/about.html" },
-        { name: "Certification", href: "https://urrja-static-site.vercel.app/certificate.html" },
+        { name: "Home", href: "https://www.urjaacademy.org/" },
+        { name: "About Us", href: "https://www.urjaacademy.org/about.html" },
+        { name: "Certification", href: "https://www.urjaacademy.org/certificate.html" },
         { name: "Admission", href: "/admission" },
         { name: "Notes", href: "/notes" },
-        { name: "Contact Us", href: "https://urrja-static-site.vercel.app/contact.html" },
+        { name: "Contact Us", href: "https://www.urjaacademy.org/contact.html" },
     ];
 
     useEffect(() => {
@@ -42,11 +42,13 @@ const Header = () => {
             <div className="flex items-center justify-around px-4 md:px-8 py-3 bg-white">
                 {/* Logo */}
                 <div className="flex items-center space-x-2">
-                    <img
-                        src="https://urrja-static-site.vercel.app/assets/img/logo/logo.svg" // replace with your logo path
-                        alt="Logo"
-                        className="h-12 w-auto"
-                    />
+                    <a href="https://www.urjaacademy.org/" className="flex items-center space-x-2">
+                        <img
+                            src="https://urrja-static-site.vercel.app/assets/img/logo/logo.svg" // replace with your logo path
+                            alt="Logo"
+                            className="h-12 w-auto"
+                        />
+                    </a>
                 </div>
 
                 {/* Desktop Nav */}

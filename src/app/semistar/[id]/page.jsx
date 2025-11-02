@@ -48,11 +48,84 @@ const Semistar = () => {
 
 
 
+    // return (
+    //     <>
+    //         {loading && <Loader />}
+    //         <div className="p-6 md:p-10 min-h-0 text-gray-900 pt-0">
+    //             <div className='pl-32'>
+    //                 <Breadcrumb>
+    //                     <BreadcrumbList>
+    //                         <BreadcrumbItem>
+    //                             <BreadcrumbLink href="/">Home</BreadcrumbLink>
+    //                         </BreadcrumbItem>
+    //                         <BreadcrumbSeparator />
+    //                         <BreadcrumbItem>
+    //                             <BreadcrumbLink onClick={() => router.back()}>All Notes</BreadcrumbLink>
+    //                         </BreadcrumbItem>
+    //                         <BreadcrumbSeparator />
+    //                         <BreadcrumbItem>
+    //                             <BreadcrumbPage>Semistars</BreadcrumbPage>
+    //                         </BreadcrumbItem>
+    //                     </BreadcrumbList>
+    //                 </Breadcrumb>
+    //             </div>
+    //             {uniqueSemesters.length === 0 ? (
+    //                 <p className="text-gray-500">No semesters found</p>
+    //             ) : (
+    //                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pl-30 pr-30 mt-10">
+    //                     {[...uniqueSemesters]
+    //                         .sort((a, b) => a.semistar - b.semistar) // ascending order
+    //                         .map((sem) => (
+
+    //                             <Card
+    //                                 key={sem._id}
+    //                                 className="w-[270px] bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-lg border border-gray-200 flex flex-col "
+    //                             >
+
+    //                                 <CardHeader className="flex items-center justify-between gap-4 px-4 py-3">
+    //                                     <div className="flex items-center gap-4">
+    //                                         <div className="bg-purple-100 text-purple-600 rounded-full p-2">
+    //                                             <StickyNote className="w-5 h-5" />
+    //                                         </div>
+    //                                         <CardTitle className="text-base font-semibold text-gray-800">
+    //                                             Semistar {sem.semistar}
+    //                                         </CardTitle>
+    //                                     </div>
+    //                                     <span className="flex items-center gap-1 px-3 py-1 text-white bg-blue-400 font-semibold rounded-full text-xs">
+    //                                         Notes: {sem.total_notes || 10}
+    //                                     </span>
+    //                                 </CardHeader>
+
+
+
+    //                                 <CardFooter className="px-4  pt-0 flex justify-start">
+    //                                     <div className="flex gap-2">
+    //                                         {/* View More Button */}
+    //                                         <Button
+    //                                             variant="outline"
+    //                                             size="sm"
+    //                                             className="flex items-center gap-1 px-3 py-1 text-xs rounded-sm border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transition-colors"
+    //                                             onClick={() => router.push(`/allnotes/${sem.course_id}/${sem.semistar}`)}
+    //                                         >
+    //                                             <Eye className="w-4 h-4" /> View More
+    //                                         </Button>
+
+    //                                     </div>
+    //                                 </CardFooter>
+    //                             </Card>
+    //                         ))}
+    //                 </div>
+    //             )}
+    //         </div>
+    //     </>
+    // )
+
     return (
         <>
             {loading && <Loader />}
-            <div className="p-6 md:p-10 min-h-0 text-gray-900 pt-0">
-                <div className='pl-32'>
+            <div className="p-4 md:p-10 min-h-0 text-gray-900 pt-10">
+                {/* Breadcrumb */}
+                <div className="pl-4 md:pl-32">
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>
@@ -60,7 +133,9 @@ const Semistar = () => {
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
-                                <BreadcrumbLink onClick={() => router.back()}>All Notes</BreadcrumbLink>
+                                <BreadcrumbLink onClick={() => router.back()}>
+                                    All Notes
+                                </BreadcrumbLink>
                             </BreadcrumbItem>
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
@@ -69,58 +144,60 @@ const Semistar = () => {
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
-                {uniqueSemesters.length === 0 ? (
-                    <p className="text-gray-500">No semesters found</p>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pl-30 pr-30 mt-10">
-                        {[...uniqueSemesters]
-                            .sort((a, b) => a.semistar - b.semistar) // ascending order
-                            .map((sem) => (
 
+                {/* No Semesters */}
+                {uniqueSemesters.length === 0 ? (
+                    <p className="text-gray-500 text-center text-lg mt-10">
+                        No semesters found
+                    </p>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mt-8 px-4 md:px-10">
+                        {[...uniqueSemesters]
+                            .sort((a, b) => a.semistar - b.semistar)
+                            .map((sem) => (
                                 <Card
                                     key={sem._id}
-                                    className="w-[270px] bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-lg border border-gray-200 flex flex-col "
+                                    className="w-full bg-white shadow-sm hover:shadow-xl transition-shadow duration-300 rounded-lg border border-gray-200 flex flex-col"
                                 >
-
-                                    <CardHeader className="flex items-center justify-between gap-4 px-4 py-3">
-                                        <div className="flex items-center gap-4">
+                                    {/* Card Header */}
+                                    <CardHeader className="flex items-center justify-between gap-4 px-4 py-3 flex-wrap">
+                                        <div className="flex items-center gap-3 flex-1">
                                             <div className="bg-purple-100 text-purple-600 rounded-full p-2">
                                                 <StickyNote className="w-5 h-5" />
                                             </div>
-                                            <CardTitle className="text-base font-semibold text-gray-800">
+                                            <CardTitle className="text-sm md:text-base font-semibold text-gray-800 truncate">
                                                 Semistar {sem.semistar}
                                             </CardTitle>
                                         </div>
-                                        <span className="flex items-center gap-1 px-3 py-1 text-white bg-blue-400 font-semibold rounded-full text-xs">
+
+                                        <span className="flex items-center gap-1 px-2 py-1 text-white bg-blue-400 font-semibold rounded-full text-xs whitespace-nowrap">
                                             Notes: {sem.total_notes || 10}
                                         </span>
                                     </CardHeader>
 
-
-
-                                    <CardFooter className="px-4  pt-0 flex justify-start">
-                                        <div className="flex gap-2">
-                                            {/* View More Button */}
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                className="flex items-center gap-1 px-3 py-1 text-xs rounded-sm border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transition-colors"
-                                                onClick={() => router.push(`/allnotes/${sem.course_id}/${sem.semistar}`)}
-                                            >
-                                                <Eye className="w-4 h-4" /> View More
-                                            </Button>
-
-                                        </div>
+                                    {/* Card Footer */}
+                                    <CardFooter className="px-4 pt-0 flex flex-wrap gap-2 justify-start">
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="flex items-center gap-1 px-3 py-1 text-xs rounded-sm border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transition-colors"
+                                            onClick={() =>
+                                                router.push(
+                                                    `/allnotes/${sem.course_id}/${sem.semistar}`
+                                                )
+                                            }
+                                        >
+                                            <Eye className="w-4 h-4" /> View More
+                                        </Button>
                                     </CardFooter>
                                 </Card>
                             ))}
                     </div>
                 )}
             </div>
-
-
         </>
-    )
+    );
+
 }
 
 export default Semistar

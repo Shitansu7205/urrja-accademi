@@ -170,7 +170,7 @@ const Allnotes = () => {
     return (
         <>
             {loading && <Loader />}
-            <div className="p-4  lg:p-10 min-h-0 text-gray-900 pt-10">
+            <div className="md:p-4  lg:p-10 min-h-0 text-gray-900 pt-10">
                 <div className='pl-12'>
                     <Breadcrumb>
                         <BreadcrumbList>
