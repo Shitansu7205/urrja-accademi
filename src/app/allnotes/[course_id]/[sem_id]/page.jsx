@@ -28,6 +28,7 @@ import { Label } from "@/components/ui/label"
 import { ShoppingCart, Eye, CreditCard } from "lucide-react";
 import toast from 'react-hot-toast'
 import Loader from "@/components/ui/Loader"
+import Link from 'next/navigation'
 
 const Allnotes = () => {
     const { course_id, sem_id } = useParams() // get from route
@@ -88,74 +89,77 @@ const Allnotes = () => {
     }, [])
 
     const handlePayment = async (noteId) => {
-        if (!name || !email || !phone) {
-            toast.error("Please fill in all the details");
-            return;
-        }
-
-        const collectData = { noteId, name, email, phone };
-        const res = await fetch('/api/create-payment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(collectData)
-        });
-        const data = await res.json();
-
-        if (!data.success) {
-            toast.error("Payment initiation failed");
-            return;
-        }
-
-        // Load Razorpay checkout
-        const options = {
-            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-            amount: data.amount,
-            currency: data.currency,
-            order_id: data.orderId,
-            name: "Urjja Academy",
-            description: "Purchase Note",
-            handler: async function (response) {
-                // Payment successful, call backend to verify
-                const verifyRes = await fetch('/api/verify-payment', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...response, noteId })
-                });
-                const verifyData = await verifyRes.json();
-
-
-
-
-
-
-                if (verifyData.success) {
-                    // Generate signed URL and redirect user
-                    // window.location.href = `/api/downloadnotes?id=${noteId}`;
-                    // ✅ Save user/payment info in cookie
-                    // setCookie("user", JSON.stringify({ name, email, phone, paid: true }), { maxAge: 60 * 30 }); // 30 mins
-                    // Store real DB user/payment info
-                    setCookie("user", JSON.stringify({
-                        _id: verifyData.userId,       // actual DB user ID
-                        name,
-                        email,
-                        paidNotes: [noteId]           // store purchased note IDs
-                    }), { maxAge: 60 * 30, path: "/" }); // 30 mins cookie
-                    window.location.href = `/download/${noteId}`;
-                } else {
-                    toast.error("Payment verification failed");
-                }
-            },
-            prefill: {
-                name,
-                email,
-                contact: phone
-            },
-            theme: { color: "#b6985a" }
-        };
-
-        const rzp = new window.Razorpay(options);
-        rzp.open();
+        window.location.href = `/download/${noteId}`;
     };
+    // const handlePayment = async (noteId) => {
+    //     if (!name || !email || !phone) {
+    //         toast.error("Please fill in all the details");
+    //         return;
+    //     }
+
+    //     const collectData = { noteId, name, email, phone };
+    //     const res = await fetch('/api/create-payment', {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify(collectData)
+    //     });
+    //     const data = await res.json();
+
+    //     if (!data.success) {
+    //         toast.error("Payment initiation failed");
+    //         return;
+    //     }
+
+    //     // Load Razorpay checkout
+    //     const options = {
+    //         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+    //         amount: data.amount,
+    //         currency: data.currency,
+    //         order_id: data.orderId,
+    //         name: "Urjja Academy",
+    //         description: "Purchase Note",
+    //         handler: async function (response) {
+    //             // Payment successful, call backend to verify
+    //             const verifyRes = await fetch('/api/verify-payment', {
+    //                 method: 'POST',
+    //                 headers: { 'Content-Type': 'application/json' },
+    //                 body: JSON.stringify({ ...response, noteId })
+    //             });
+    //             const verifyData = await verifyRes.json();
+
+
+
+
+
+
+    //             if (verifyData.success) {
+    //                 // Generate signed URL and redirect user
+    //                 // window.location.href = `/api/downloadnotes?id=${noteId}`;
+    //                 // ✅ Save user/payment info in cookie
+    //                 // setCookie("user", JSON.stringify({ name, email, phone, paid: true }), { maxAge: 60 * 30 }); // 30 mins
+    //                 // Store real DB user/payment info
+    //                 setCookie("user", JSON.stringify({
+    //                     _id: verifyData.userId,       // actual DB user ID
+    //                     name,
+    //                     email,
+    //                     paidNotes: [noteId]           // store purchased note IDs
+    //                 }), { maxAge: 60 * 30, path: "/" }); // 30 mins cookie
+    //                 window.location.href = `/download/${noteId}`;
+    //             } else {
+    //                 toast.error("Payment verification failed");
+    //             }
+    //         },
+    //         prefill: {
+    //             name,
+    //             email,
+    //             contact: phone
+    //         },
+    //         theme: { color: "#b6985a" }
+    //     };
+
+    //     const rzp = new window.Razorpay(options);
+    //     rzp.open();
+    // };
 
 
 
@@ -240,7 +244,15 @@ const Allnotes = () => {
                                                 <ShoppingCart className="w-5 h-5" />
                                                 Buy Now
                                             </Button> */}
+                                            <Button
+                                                className="bg-[#781921] text-white hover:opacity-90 flex items-center gap-2 w-full"
+                                                onClick={() => handlePayment(note._id)} // 👈 updated to handleDownload
+                                            >
+                                                Download Notes
+                                                <ShoppingCart className="w-5 h-5" />
+                                            </Button>
 
+                                            {/* 
                                             <Dialog>
                                                 <DialogTrigger asChild>
                                                     <Button className="flex-1 flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-2 rounded-lg shadow-md hover:shadow-lg hover:bg-purple-700 transition-all duration-200">
@@ -302,16 +314,16 @@ const Allnotes = () => {
                                                         </Button>
                                                     </DialogFooter>
                                                 </DialogContent>
-                                            </Dialog>
+                                            </Dialog> */}
 
                                             {/* Preview Button */}
-                                            <Button
+                                            {/* <Button
                                                 className="flex-1 flex items-center justify-center gap-2 bg-white text-purple-600 px-6 py-2 rounded-lg border-2 border-purple-600 hover:bg-purple-50 hover:border-purple-700 transition-all duration-200"
                                             // onClick={() => previewNote(note)}
                                             >
                                                 <Eye className="w-5 h-5" />
                                                 Preview
-                                            </Button>
+                                            </Button> */}
                                         </div>
                                     </div>
                                 </div>
